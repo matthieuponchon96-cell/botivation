@@ -1,7 +1,7 @@
 import os
 import json
+import requests as http_requests
 from flask import Flask, request, jsonify, send_from_directory
-from google import genai
 
 # Resolve paths relative to this script
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -276,18 +276,23 @@ Retourne UNIQUEMENT un JSON valide, sans texte avant ou apres :
 
 
 def query_gemini(prompt, use_search=False):
-    client = genai.Client(api_key=GEMINI_API_KEY)
-    config = None
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+    body = {
+        "contents": [{"parts": [{"text": prompt}]}],
+    }
     if use_search:
-        config = genai.types.GenerateContentConfig(
-            tools=[genai.types.Tool(google_search=genai.types.GoogleSearch())],
-        )
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-        config=config,
-    )
-    return response.text
+        body["tools"] = [{"google_search": {}}]
+
+    resp = http_requests.post(url, json=body, timeout=120)
+    resp.raise_for_status()
+    data = resp.json()
+
+    # Extract text from response
+    candidates = data.get("candidates", [])
+    if not candidates:
+        raise Exception("Pas de reponse de Gemini")
+    parts = candidates[0].get("content", {}).get("parts", [])
+    return "".join(p.get("text", "") for p in parts)
 
 
 # --- Routes ---
