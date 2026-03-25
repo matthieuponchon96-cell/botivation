@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lettre de Motivation - Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Lettre de Motivation</h1>
+            <p class="subtitle">Architecture & Urbanisme</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Auto-generate bar -->
+        <section class="auto-bar">
+            <div class="auto-bar-inner">
+                <div class="auto-input-group">
+                    <input type="text" id="auto-agency-name" placeholder="Entrez le nom d'une agence d'architecture...">
+                    <button id="btn-auto-generate" class="btn btn-auto">
+                        <span class="btn-auto-text">G&eacute;n&eacute;rer automatiquement</span>
+                        <span class="btn-auto-spinner" style="display:none;">
+                            <span class="spinner"></span>
+                            Recherche en cours...
+                        </span>
+                    </button>
+                </div>
+                <p class="auto-hint">Entrez juste le nom de l'agence et l'IA remplira tous les champs automatiquement</p>
+            </div>
+        </section>
+
+        <div class="panel-container">
+            <!-- Left Panel: Agency Info -->
+            <section class="panel panel-form">
+                <h2>
+                    <span class="panel-icon">&#9998;</span>
+                    Informations de l'agence
+                </h2>
+
+                <div class="form-group">
+                    <label for="nom_agence">Nom de l'agence</label>
+                    <input type="text" id="nom_agence" placeholder="Ex: BIG - Bjarke Ingels Group">
+                </div>
+
+                <div class="form-group">
+                    <label for="nom_dirigeant">Nom du dirigeant / contact</label>
+                    <input type="text" id="nom_dirigeant" placeholder="Ex: Bjarke Ingels">
+                </div>
+
+                <div class="form-group">
+                    <label for="civilite">Civilit&eacute;</label>
+                    <select id="civilite">
+                        <option value="Madame, Monsieur">Madame, Monsieur</option>
+                        <option value="Madame">Madame</option>
+                        <option value="Monsieur">Monsieur</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ville_agence">Ville de l'agence</label>
+                    <input type="text" id="ville_agence" placeholder="Ex: Paris">
+                </div>
+
+                <div class="form-group">
+                    <label for="specialite">Sp&eacute;cialit&eacute; / ADN de l'agence</label>
+                    <textarea id="specialite" rows="2" placeholder="Ex: architecture durable, approche contextuelle..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="projet_notable">Projet(s) notable(s)</label>
+                    <textarea id="projet_notable" rows="2" placeholder="Ex: la Maison de l'&Eacute;conomie Cr&eacute;ative de Copenhague"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_qui_attire">Ce qui vous attire chez eux</label>
+                    <textarea id="ce_qui_attire" rows="2" placeholder="Ex: la capacit&eacute; &agrave; m&ecirc;ler innovation et po&eacute;sie spatiale"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="poste">Type de poste vis&eacute;</label>
+                    <input type="text" id="poste" placeholder="Ex: architecte collaborateur, stage...">
+                </div>
+
+                <div class="form-group">
+                    <label for="competence_cle">Comp&eacute;tence cl&eacute; &agrave; mettre en avant</label>
+                    <textarea id="competence_cle" rows="2" placeholder="Ex: ma&icirc;trise de Revit et conception bioclimatique"></textarea>
+                </div>
+
+                <div class="actions">
+                    <button id="btn-generate" class="btn btn-primary">G&eacute;n&eacute;rer la lettre</button>
+                    <button id="btn-reset" class="btn btn-secondary">R&eacute;initialiser</button>
+                </div>
+            </section>
+
+            <!-- Right Panel: Template + Preview -->
+            <section class="panel panel-output">
+                <div class="tabs">
+                    <button class="tab active" data-tab="preview">Aper&ccedil;u</button>
+                    <button class="tab" data-tab="template">Template</button>
+                    <button class="tab" data-tab="analysis">Analyse</button>
+                </div>
+
+                <div class="tab-content active" id="tab-preview">
+                    <div class="letter-preview" id="letter-preview">
+                        <p class="placeholder-msg">Remplissez les champs ou utilisez la <strong>g&eacute;n&eacute;ration automatique</strong> puis cliquez sur <strong>G&eacute;n&eacute;rer la lettre</strong>.</p>
+                    </div>
+                    <div class="preview-legend" id="preview-legend" style="display:none;">
+                        <span class="legend-item"><span class="legend-dot generated"></span> G&eacute;n&eacute;r&eacute; / personnalis&eacute;</span>
+                        <span class="legend-item"><span class="legend-dot missing"></span> Non renseign&eacute;</span>
+                    </div>
+                    <div class="output-actions" id="output-actions" style="display:none;">
+                        <button id="btn-copy" class="btn btn-small">Copier le texte</button>
+                        <button id="btn-download" class="btn btn-small">T&eacute;l&eacute;charger (.txt)</button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-template">
+                    <textarea id="template-editor" spellcheck="false">Objet : Candidature au poste de {{poste}} — {{nom_agence}}
+
+{{civilite}},
+
+C'est avec un vif intérêt que je vous adresse ma candidature pour rejoindre {{nom_agence}} en tant que {{poste}}.
+
+Votre agence, reconnue pour {{specialite}}, incarne une vision de l'architecture qui résonne profondément avec mes convictions professionnelles. J'ai été particulièrement marqué(e) par {{projet_notable}}, qui illustre {{ce_qui_attire}}.
+
+Fort(e) d'une expérience solide en conception architecturale, j'ai développé des compétences en {{competence_cle}} que je souhaite mettre au service de vos projets. Mon parcours m'a appris à conjuguer rigueur technique et sensibilité créative, deux qualités que je retrouve au cœur de l'identité de {{nom_agence}}.
+
+Travailler au sein de votre équipe à {{ville_agence}} représente pour moi l'opportunité de contribuer à des projets ambitieux tout en poursuivant ma progression dans un environnement stimulant.
+
+Je serais ravi(e) de pouvoir échanger avec vous sur ma candidature et sur la manière dont je pourrais apporter ma contribution à {{nom_agence}}.
+
+Dans l'attente de votre retour, je vous prie d'agréer, {{civilite}}, l'expression de mes salutations distinguées.
+
+[Votre Prénom Nom]
+[Téléphone]
+[Email]</textarea>
+                    <p class="template-hint">Variables disponibles : <code>{{nom_agence}}</code>, <code>{{nom_dirigeant}}</code>, <code>{{civilite}}</code>, <code>{{ville_agence}}</code>, <code>{{specialite}}</code>, <code>{{projet_notable}}</code>, <code>{{ce_qui_attire}}</code>, <code>{{poste}}</code>, <code>{{competence_cle}}</code></p>
+                    <button id="btn-analyze-template" class="btn btn-analyze">
+                        <span class="btn-analyze-text">Analyser mon template</span>
+                        <span class="btn-analyze-spinner" style="display:none;">
+                            <span class="spinner"></span>
+                            Analyse en cours...
+                        </span>
+                    </button>
+                </div>
+
+                <div class="tab-content" id="tab-analysis">
+                    <div id="analysis-dashboard" class="analysis-dashboard">
+                        <p class="placeholder-msg">Cliquez sur <strong>Analyser mon template</strong> dans l'onglet Template pour obtenir un diagnostic.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Saved Templates & Agencies -->
+        <div class="saved-row">
+            <section class="panel panel-saved">
+                <h2><span class="panel-icon">&#128196;</span> Templates sauvegard&eacute;s</h2>
+                <div class="saved-templates-bar">
+                    <div id="saved-templates-list" class="saved-list"></div>
+                    <button id="btn-save-template" class="btn btn-small">Sauvegarder le template</button>
+                </div>
+            </section>
+
+            <section class="panel panel-saved">
+                <h2><span class="panel-icon">&#127970;</span> Agences sauvegard&eacute;es</h2>
+                <div class="saved-templates-bar">
+                    <div id="saved-agencies-list" class="saved-list"></div>
+                    <button id="btn-save-agency" class="btn btn-small">Sauvegarder l'agence</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>Adaptateur de Lettre de Motivation &mdash; Architecture & Urbanisme</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
