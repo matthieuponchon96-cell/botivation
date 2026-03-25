@@ -13,7 +13,7 @@ export function AgencySearchBar() {
   const state = useAppState();
   const dispatch = useAppDispatch();
   const toast = useToast();
-  const { query, setQuery, results, isSearching, isResearchingAI, aiResult, aiError, clearResults } = useAgencySearch();
+  const { query, setQuery, results, isResearchingAI, aiResult, aiError, clearResults } = useAgencySearch();
   const [showDropdown, setShowDropdown] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState(-1);
   const [showInstructions, setShowInstructions] = useState(false);
